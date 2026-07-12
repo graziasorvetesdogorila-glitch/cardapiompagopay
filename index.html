@@ -1,0 +1,1811 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grazia Sorvetes - O Sorvete do Gorila</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6A1B9A;
+            --primary-deep: #4A148C;
+            --primary-light: #AB47BC;
+            --secondary: #00BFA5;
+            --secondary-deep: #00897B;
+            --accent: #FF6F00;
+            --bg: #FAF5FF;
+            --bg-warm: #F3E8FF;
+            --surface: #FFFFFF;
+            --surface-hover: #F8F0FF;
+            --text: #1A0A2E;
+            --text-muted: #6B5B7B;
+            --text-light: #9B8AAE;
+            --border: #E0D0F0;
+            --border-hover: #C8B0E0;
+            --shadow-sm: 0 2px 8px rgba(106, 27, 154, 0.06);
+            --shadow-md: 0 8px 30px rgba(106, 27, 154, 0.1);
+            --shadow-lg: 0 20px 60px rgba(106, 27, 154, 0.15);
+            --radius-sm: 8px;
+            --radius-md: 14px;
+            --radius-lg: 22px;
+            --radius-xl: 30px;
+            --mp-blue: #009ee3;
+            --mp-blue-deep: #007eb5;
+        }
+        [data-theme="dark"] {
+            --primary: #CE93D8;
+            --primary-deep: #9C27B0;
+            --primary-light: #E1BEE7;
+            --secondary: #64FFDA;
+            --secondary-deep: #1DE9B6;
+            --accent: #FFAB40;
+            --bg: #0D0517;
+            --bg-warm: #140A24;
+            --surface: #1C0F30;
+            --surface-hover: #261540;
+            --text: #F0E6FF;
+            --text-muted: #9B85B5;
+            --text-light: #6B5580;
+            --border: #2E1A4A;
+            --border-hover: #4A2D70;
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.2);
+            --shadow-md: 0 8px 30px rgba(0, 0, 0, 0.3);
+            --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.4);
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.5;
+            overflow-x: hidden;
+            transition: background 0.4s ease, color 0.4s ease;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        header {
+            position: relative;
+            background: linear-gradient(160deg, var(--primary-deep) 0%, var(--primary) 40%, #7B1FA2 70%, var(--secondary-deep) 100%);
+            padding: 50px 24px 45px;
+            text-align: center;
+            overflow: hidden;
+        }
+        header::before {
+            content: '';
+            position: absolute;
+            top: -60%;
+            left: -20%;
+            width: 80%;
+            height: 200%;
+            background: radial-gradient(ellipse, rgba(255,255,255,0.08) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            right: 0;
+            height: 40px;
+            background: var(--bg);
+            border-radius: 50% 50% 0 0;
+        }
+        .header-content { position: relative; z-index: 2; }
+        .header-logo {
+            font-family: 'DM Serif Display', serif;
+            font-size: 2.8rem;
+            color: #fff;
+            letter-spacing: 0.02em;
+            text-shadow: 0 3px 20px rgba(0,0,0,0.3);
+            margin-bottom: 6px;
+            animation: fadeDown 0.7s ease both;
+        }
+        .header-tagline {
+            font-size: 1rem;
+            color: rgba(255,255,255,0.85);
+            font-weight: 300;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+            animation: fadeDown 0.7s ease 0.1s both;
+        }
+        .header-info {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 16px;
+            animation: fadeDown 0.7s ease 0.2s both;
+        }
+        .header-info span {
+            color: rgba(255,255,255,0.9);
+            font-size: 0.88rem;
+            font-weight: 400;
+            background: rgba(255,255,255,0.12);
+            padding: 6px 16px;
+            border-radius: 30px;
+            backdrop-filter: blur(6px);
+        }
+        .theme-toggle {
+            position: absolute;
+            top: 18px;
+            right: 18px;
+            z-index: 10;
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+        }
+        .theme-toggle:hover {
+            background: rgba(255,255,255,0.3);
+            transform: scale(1.05);
+        }
+
+        .container {
+            max-width: 1080px;
+            margin: 0 auto;
+            padding: 10px 20px 100px;
+        }
+
+        .controls { margin: 20px 0 10px; }
+        .search-bar {
+            width: 100%;
+            padding: 14px 20px 14px 48px;
+            border: 2px solid var(--border);
+            border-radius: var(--radius-lg);
+            background: var(--surface);
+            color: var(--text);
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 400;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-sm);
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%239B8AAE' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'%3E%3C/circle%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'%3E%3C/line%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: 16px center;
+        }
+        .search-bar:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(106,27,154,0.08), var(--shadow-md);
+        }
+
+        .category-filters {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding: 12px 0 16px;
+            margin-bottom: 10px;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .category-filters::-webkit-scrollbar { display: none; }
+        .category-btn {
+            background: var(--surface);
+            border: 1.5px solid var(--border);
+            color: var(--text-muted);
+            padding: 9px 18px;
+            border-radius: var(--radius-xl);
+            cursor: pointer;
+            white-space: nowrap;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: all 0.25s ease;
+            box-shadow: var(--shadow-sm);
+        }
+        .category-btn:hover {
+            border-color: var(--primary-light);
+            color: var(--primary);
+            transform: translateY(-1px);
+        }
+        .category-btn.active {
+            background: linear-gradient(135deg, var(--primary-deep), var(--primary));
+            color: white;
+            border-color: transparent;
+            box-shadow: 0 4px 16px rgba(106,27,154,0.25);
+        }
+
+        .product-section { animation: fadeUp 0.5s ease both; }
+        .section-title {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.65rem;
+            color: var(--text);
+            margin: 36px 0 16px;
+            padding-left: 16px;
+            border-left: 4px solid var(--primary);
+            letter-spacing: 0.01em;
+        }
+        .pricing-info {
+            background: linear-gradient(135deg, var(--surface), var(--surface-hover));
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 16px 20px;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: var(--text-muted);
+            box-shadow: var(--shadow-sm);
+        }
+        .pricing-info strong { color: var(--primary); }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(165px, 1fr));
+            gap: 14px;
+        }
+        .product-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 16px 12px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 8px;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.3s ease;
+            opacity: 0;
+            animation: cardIn 0.4s ease forwards;
+        }
+        .product-card:nth-child(1) { animation-delay: 0.03s; }
+        .product-card:nth-child(2) { animation-delay: 0.06s; }
+        .product-card:nth-child(3) { animation-delay: 0.09s; }
+        .product-card:nth-child(4) { animation-delay: 0.12s; }
+        .product-card:nth-child(5) { animation-delay: 0.15s; }
+        .product-card:nth-child(6) { animation-delay: 0.18s; }
+        .product-card:nth-child(7) { animation-delay: 0.21s; }
+        .product-card:nth-child(8) { animation-delay: 0.24s; }
+        .product-card:nth-child(9) { animation-delay: 0.27s; }
+        .product-card:nth-child(10) { animation-delay: 0.30s; }
+        .product-card:nth-child(11) { animation-delay: 0.33s; }
+        .product-card:nth-child(12) { animation-delay: 0.36s; }
+        .product-card:nth-child(n+13) { animation-delay: 0.39s; }
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--border-hover);
+        }
+        .product-name {
+            font-weight: 600;
+            font-size: 0.88rem;
+            color: var(--text);
+            min-height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1.3;
+        }
+        .product-price {
+            font-family: 'DM Serif Display', serif;
+            color: var(--primary);
+            font-size: 1.15rem;
+            font-weight: 400;
+        }
+        .size-select {
+            width: 100%;
+            padding: 7px 8px;
+            border-radius: var(--radius-sm);
+            border: 1.5px solid var(--border);
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.82rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+        .size-select:focus { outline: none; border-color: var(--primary); }
+        .add-btn {
+            background: linear-gradient(135deg, var(--secondary-deep), var(--secondary));
+            color: white;
+            border: none;
+            padding: 9px 10px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            font-size: 0.82rem;
+            width: 100%;
+            letter-spacing: 0.03em;
+            transition: all 0.25s ease;
+            text-transform: uppercase;
+        }
+        .add-btn:hover {
+            transform: scale(1.03);
+            box-shadow: 0 4px 15px rgba(0, 191, 165, 0.35);
+            filter: brightness(1.08);
+        }
+        .add-btn:active { transform: scale(0.97); }
+
+        .addons-list {
+            text-align: left;
+            background: var(--bg-warm);
+            padding: 10px 12px;
+            border-radius: var(--radius-sm);
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            border: 1px solid var(--border);
+        }
+        .addons-list strong {
+            display: block;
+            margin-bottom: 4px;
+            color: var(--text);
+            font-size: 0.8rem;
+        }
+        .addons-list label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin: 3px 0;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .addons-list label:hover { color: var(--primary); }
+
+        .cart-preview-bar {
+            position: fixed;
+            bottom: 16px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 32px);
+            max-width: 600px;
+            background: linear-gradient(135deg, var(--primary-deep), var(--primary));
+            color: white;
+            padding: 16px 24px;
+            border-radius: var(--radius-xl);
+            cursor: pointer;
+            box-shadow: 0 10px 40px rgba(106, 27, 154, 0.35);
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.15);
+        }
+        .cart-preview-bar:hover {
+            transform: translateX(-50%) translateY(-2px);
+            box-shadow: 0 14px 50px rgba(106, 27, 154, 0.45);
+        }
+        .cart-preview-bar span { font-weight: 600; font-size: 0.95rem; }
+
+        .modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(10, 5, 20, 0.7);
+            backdrop-filter: blur(8px);
+            display: none;
+            justify-content: center;
+            align-items: flex-end;
+            z-index: 2000;
+            padding: 0;
+        }
+        .modal-content {
+            background: var(--surface);
+            color: var(--text);
+            padding: 28px 24px;
+            border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+            max-width: 580px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: slideUp 0.35s ease;
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 16px;
+            margin-bottom: 16px;
+            border-bottom: 2px solid var(--border);
+        }
+        .modal-header h3 {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.4rem;
+        }
+        .close-btn {
+            background: var(--bg-warm);
+            border: 1px solid var(--border);
+            font-size: 1.3rem;
+            color: var(--text-muted);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        .close-btn:hover {
+            background: var(--border);
+            color: var(--text);
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 0;
+            border-bottom: 1px solid var(--border);
+            gap: 12px;
+        }
+        .cart-item > div:first-child { flex: 1; min-width: 0; }
+        .cart-item strong { font-size: 0.9rem; display: block; margin: 2px 0; }
+        .cart-item-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-shrink: 0;
+        }
+        .cart-item-actions span { font-weight: 600; min-width: 18px; text-align: center; }
+        .qty-btn {
+            background: var(--bg-warm);
+            border: 1.5px solid var(--border);
+            color: var(--text);
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        .qty-btn:hover { background: var(--primary); color: white; border-color: var(--primary); }
+
+        .form-group { margin-bottom: 14px; }
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            font-size: 0.88rem;
+            color: var(--text);
+        }
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: var(--radius-sm);
+            border: 1.5px solid var(--border);
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.92rem;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(106,27,154,0.08);
+        }
+
+        .payment-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin: 16px 0;
+        }
+        .payment-card {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 18px;
+            border: 2px solid var(--border);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all 0.25s ease;
+            background: var(--surface);
+        }
+        .payment-card:hover {
+            border-color: var(--primary-light);
+            background: var(--surface-hover);
+        }
+        .payment-card.selected {
+            border-color: var(--primary);
+            background: var(--bg-warm);
+            box-shadow: 0 0 0 3px rgba(106,27,154,0.1);
+        }
+        .payment-card input[type="radio"] {
+            accent-color: var(--primary);
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            pointer-events: none;
+        }
+        .payment-card-icon {
+            font-size: 1.4rem;
+            width: 40px;
+            text-align: center;
+        }
+        .payment-card-info h4 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text);
+        }
+        .payment-card-info p {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+        .payment-badge {
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 20px;
+            background: var(--secondary);
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-left: auto;
+            white-space: nowrap;
+        }
+
+        .mp-badge {
+            background: var(--mp-blue);
+        }
+
+        .checkout-btn {
+            background: linear-gradient(135deg, var(--mp-blue-deep), var(--mp-blue));
+            color: white;
+            border: none;
+            padding: 16px;
+            width: 100%;
+            border-radius: var(--radius-md);
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.05rem;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 16px;
+            letter-spacing: 0.03em;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 24px rgba(0, 158, 227, 0.25);
+        }
+        .checkout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 35px rgba(0, 158, 227, 0.35);
+            filter: brightness(1.08);
+        }
+        .checkout-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+            filter: none;
+        }
+
+        .delivery-alert {
+            background: var(--bg-warm);
+            border-left: 3px solid var(--primary);
+            padding: 12px 16px;
+            font-size: 0.84rem;
+            margin-bottom: 14px;
+            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+        .delivery-alert strong { color: var(--primary); }
+
+        .mp-info-box {
+            background: linear-gradient(135deg, #e8f4fd, #d0ecfb);
+            border: 1px solid #7ec8e3;
+            border-radius: var(--radius-md);
+            padding: 16px;
+            margin: 18px 0;
+            text-align: center;
+            color: #0a5688;
+        }
+        [data-theme="dark"] .mp-info-box {
+            background: linear-gradient(135deg, #0d2535, #0f3050);
+            border-color: #1a6b96;
+            color: #64b5f6;
+        }
+        .mp-info-box .mp-logo-text {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        .mp-info-box p {
+            font-size: 0.82rem;
+            opacity: 0.85;
+            margin-top: 4px;
+        }
+
+        .payment-required-alert {
+            background: linear-gradient(135deg, #FFF8E1, #FFF3E0);
+            border-left: 3px solid #FF9800;
+            color: #E65100;
+            padding: 12px 16px;
+            font-size: 0.88rem;
+            margin-top: 16px;
+            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+            font-weight: 600;
+            text-align: center;
+            line-height: 1.5;
+        }
+        [data-theme="dark"] .payment-required-alert {
+            background: linear-gradient(135deg, #2D1B00, #3D2500);
+            color: #FFB74D;
+        }
+
+        #cart-delivery-fee {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            padding: 8px 0;
+        }
+        #cart-total-price {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.3rem;
+            color: var(--primary);
+            padding: 10px 0 4px;
+        }
+
+        .mp-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(10, 5, 20, 0.85);
+            backdrop-filter: blur(12px);
+            z-index: 3000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+        .mp-overlay.show { display: flex; }
+        .mp-box {
+            background: var(--surface);
+            border-radius: var(--radius-xl);
+            padding: 32px;
+            max-width: 440px;
+            width: 90%;
+            text-align: center;
+            animation: slideUp 0.35s ease;
+        }
+        .mp-box h3 {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.3rem;
+            margin-bottom: 12px;
+        }
+        .mp-box p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+        }
+        .mp-spinner {
+            width: 48px;
+            height: 48px;
+            border: 4px solid var(--border);
+            border-top-color: var(--mp-blue);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 20px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            margin-top: 40px;
+            border-top: 1px solid var(--border);
+            color: var(--text-muted);
+            font-size: 0.88rem;
+            line-height: 1.8;
+        }
+        footer strong {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.1rem;
+            color: var(--text);
+        }
+        footer small { color: var(--text-light); font-size: 0.78rem; }
+
+        .wa-bot-wrapper {
+            position: fixed;
+            bottom: 90px;
+            right: 20px;
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 12px;
+        }
+        .wa-bot-panel {
+            display: none;
+            width: 320px;
+            background: var(--surface);
+            border-radius: var(--radius-lg);
+            box-shadow: 0 12px 48px rgba(0,0,0,0.18);
+            overflow: hidden;
+            border: 1px solid var(--border);
+            animation: waSlideUp 0.3s ease;
+        }
+        .wa-bot-panel.open { display: block; }
+        .wa-bot-header {
+            background: linear-gradient(135deg, #075E54, #25D366);
+            color: white;
+            padding: 16px 18px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .wa-bot-avatar {
+            width: 42px;
+            height: 42px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+        .wa-bot-header-info h4 {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            font-size: 0.95rem;
+            margin-bottom: 1px;
+        }
+        .wa-bot-header-info span {
+            font-size: 0.75rem;
+            opacity: 0.85;
+            font-weight: 400;
+        }
+        .wa-bot-body {
+            padding: 14px 16px;
+            background: #ECE5DD;
+            min-height: 120px;
+        }
+        [data-theme="dark"] .wa-bot-body { background: #1a1a2e; }
+        .wa-bot-msg {
+            background: white;
+            padding: 10px 14px;
+            border-radius: 0 12px 12px 12px;
+            font-size: 0.85rem;
+            line-height: 1.5;
+            color: #303030;
+            margin-bottom: 10px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.08);
+            max-width: 90%;
+        }
+        [data-theme="dark"] .wa-bot-msg {
+            background: #2a2a40;
+            color: var(--text);
+        }
+        .wa-bot-options {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-top: 8px;
+        }
+        .wa-bot-opt {
+            background: white;
+            border: 1px solid #25D366;
+            color: #075E54;
+            padding: 9px 14px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            font-size: 0.82rem;
+            text-align: left;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        [data-theme="dark"] .wa-bot-opt {
+            background: #1C0F30;
+            color: var(--secondary);
+            border-color: var(--secondary);
+        }
+        .wa-bot-opt:hover {
+            background: #25D366;
+            color: white;
+            transform: translateX(4px);
+        }
+        .wa-bot-input-area {
+            display: flex;
+            padding: 10px 12px;
+            gap: 8px;
+            background: #F0F0F0;
+            border-top: 1px solid #ddd;
+        }
+        [data-theme="dark"] .wa-bot-input-area {
+            background: #140A24;
+            border-color: var(--border);
+        }
+        .wa-bot-input-area input {
+            flex: 1;
+            padding: 9px 14px;
+            border: none;
+            border-radius: 20px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.85rem;
+            background: white;
+            color: #333;
+            outline: none;
+        }
+        [data-theme="dark"] .wa-bot-input-area input {
+            background: #1C0F30;
+            color: var(--text);
+        }
+        .wa-bot-send {
+            background: #25D366;
+            border: none;
+            color: white;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+        .wa-bot-send:hover { background: #075E54; transform: scale(1.08); }
+        .wa-fab {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #075E54, #25D366);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 6px 24px rgba(37, 211, 102, 0.4);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        .wa-fab:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 32px rgba(37, 211, 102, 0.55);
+        }
+        .wa-fab svg { width: 30px; height: 30px; fill: white; }
+        .wa-fab-pulse {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: rgba(37, 211, 102, 0.3);
+            animation: waPulse 2s infinite;
+            pointer-events: none;
+        }
+        .wa-fab-badge {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            background: #FF3B30;
+            color: white;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            font-size: 0.7rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid var(--bg);
+            animation: waBounce 0.5s ease;
+        }
+        .wa-bot-bubble {
+            background: white;
+            color: #333;
+            padding: 8px 14px;
+            border-radius: 16px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+            white-space: nowrap;
+            animation: waFadeUp 0.4s ease;
+            cursor: pointer;
+        }
+        [data-theme="dark"] .wa-bot-bubble {
+            background: #1C0F30;
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+
+        @keyframes waPulse {
+            0% { transform: scale(1); opacity: 0.6; }
+            70% { transform: scale(1.6); opacity: 0; }
+            100% { transform: scale(1.6); opacity: 0; }
+        }
+        @keyframes waBounce {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+        @keyframes waSlideUp {
+            from { opacity: 0; transform: translateY(16px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        @keyframes waFadeUp {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeDown {
+            from { opacity: 0; transform: translateY(-16px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes cardIn {
+            from { opacity: 0; transform: translateY(16px) scale(0.97); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        @keyframes slideUp {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
+        }
+
+        @media (min-width: 600px) {
+            .modal { align-items: center; }
+            .modal-content {
+                border-radius: var(--radius-xl);
+                max-height: 85vh;
+            }
+        }
+        @media (max-width: 480px) {
+            .header-logo { font-size: 2rem; }
+            .grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+            .product-card { padding: 12px 10px; }
+            .section-title { font-size: 1.35rem; }
+            .container { padding: 10px 14px 100px; }
+            .wa-bot-panel { width: calc(100vw - 40px); }
+            .wa-bot-wrapper { right: 12px; bottom: 84px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <button class="theme-toggle" onclick="toggleTheme()">Modo Escuro</button>
+        <div class="header-content">
+            <div class="header-logo">GRAZIA SORVETES</div>
+            <div class="header-tagline">O Sorvete do Gorila</div>
+            <div class="header-info">
+                <span>Rua General Julio Salgado, 399 - Alto do Tabao</span>
+                <span>(12) 99161-8035</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="controls">
+            <input type="text" id="search" class="search-bar" placeholder="Buscar sabor ou produto..." oninput="filterProducts()">
+        </div>
+
+        <div class="category-filters">
+            <button class="category-btn active" onclick="filterCategory('all')">Todos</button>
+            <button class="category-btn" onclick="filterCategory('picole')">Picoles</button>
+            <button class="category-btn" onclick="filterCategory('paleta')">Paletas</button>
+            <button class="category-btn" onclick="filterCategory('pote300')">Potes 300ml</button>
+            <button class="category-btn" onclick="filterCategory('pote1L')">Potes 1L</button>
+            <button class="category-btn" onclick="filterCategory('pote1800')">Potes 1.8L</button>
+            <button class="category-btn" onclick="filterCategory('copo-acai')">Copos de Acai</button>
+            <button class="category-btn" onclick="filterCategory('acai')">Acai Litro</button>
+            <button class="category-btn" onclick="filterCategory('garrafa-acai')">Acai na Garrafa</button>
+            <button class="category-btn" onclick="filterCategory('milkshake')">Milk Shake Acai</button>
+            <button class="category-btn" onclick="filterCategory('embalagens')">Embalagens & Coberturas</button>
+            <button class="category-btn" onclick="filterCategory('outros')">Especiais</button>
+        </div>
+
+        <!-- PICOLES -->
+        <div class="product-section" data-cat="picole">
+            <h2 class="section-title">PICOLES</h2>
+            <div class="pricing-info">
+                <strong>Preco por atacado:</strong><br>
+                Unidade: R$ 2,20 &nbsp;|&nbsp; 10 ou mais: R$ 1,80 cada &nbsp;|&nbsp; 100 ou mais: R$ 1,60 cada
+            </div>
+            <div class="grid" id="grid-picoles"></div>
+        </div>
+
+        <!-- PALETAS -->
+        <div class="product-section" data-cat="paleta">
+            <h2 class="section-title">PALETAS DO GORILA</h2>
+            <div class="pricing-info">Valor unitario: <strong>R$ 6,30 cada</strong></div>
+            <div class="grid" id="grid-paletas"></div>
+        </div>
+
+        <!-- POTES 300 ML -->
+        <div class="product-section" data-cat="pote300">
+            <h2 class="section-title">SORVETE DE POTE 300 ML</h2>
+            <div class="pricing-info">Valor unitario: <strong>R$ 10,00 cada</strong></div>
+            <div class="grid" id="grid-potes300"></div>
+        </div>
+
+        <!-- POTES 1 LITRO -->
+        <div class="product-section" data-cat="pote1L">
+            <h2 class="section-title">SORVETE EM POTE - 1 LITRO</h2>
+            <div class="pricing-info">Valor unitario: <strong>R$ 19,00 cada</strong></div>
+            <div class="grid" id="grid-potes1L"></div>
+        </div>
+
+        <!-- POTES 1.800 ML -->
+        <div class="product-section" data-cat="pote1800">
+            <h2 class="section-title">SORVETE EM POTE - 1.800 ML</h2>
+            <div class="pricing-info">Valor unitario: <strong>R$ 29,00 cada</strong></div>
+            <div class="grid" id="grid-potes1800"></div>
+        </div>
+
+        <!-- COPOS DE ACAI -->
+        <div class="product-section" data-cat="copo-acai">
+            <h2 class="section-title">COPOS DE ACAI</h2>
+            <div class="grid" id="grid-copos-acai"></div>
+        </div>
+
+        <!-- ACAI EM LITRO -->
+        <div class="product-section" data-cat="acai">
+            <h2 class="section-title">ACAI EM LITRO</h2>
+            <div class="grid" id="grid-acai"></div>
+        </div>
+
+        <!-- ACAI NA GARRAFA -->
+        <div class="product-section" data-cat="garrafa-acai">
+            <h2 class="section-title">ACAI NA GARRAFA (Escolha ate 2 adicionais)</h2>
+            <div class="pricing-info">
+                Adicionais inclusos: <strong>Leite em Po, Leite Condensado, Pacoca</strong> (ate 2 por garrafa)
+            </div>
+            <div class="grid" id="grid-garrafa-acai"></div>
+        </div>
+
+        <!-- MILK SHAKE -->
+        <div class="product-section" data-cat="milkshake">
+            <h2 class="section-title">MILK SHAKE DE ACAI (Escolha ate 2 adicionais)</h2>
+            <div class="pricing-info">
+                Adicionais inclusos: <strong>Leite em Po, Leite Condensado, Pacoca</strong> (ate 2 por milk shake)
+            </div>
+            <div class="grid" id="grid-milkshake"></div>
+        </div>
+
+        <!-- EMBALAGENS -->
+        <div class="product-section" data-cat="embalagens">
+            <h2 class="section-title">EMBALAGENS & COBERTURAS</h2>
+            <div class="grid" id="grid-embalagens"></div>
+        </div>
+
+        <!-- ESPECIAIS -->
+        <div class="product-section" data-cat="outros">
+            <h2 class="section-title">ESPECIAIS</h2>
+            <div class="grid" id="grid-outros"></div>
+        </div>
+    </div>
+
+    <footer>
+        <strong>GRAZIA SORVETES - O SORVETE DO GORILA</strong><br>
+        Rua General Julio Salgado, 399 - Alto do Tabao (Na Praca)<br>
+        WhatsApp: (12) 99161-8035<br>
+        <small>2026 - Todos os direitos reservados</small>
+    </footer>
+
+    <!-- BARRA DO CARRINHO -->
+    <div class="cart-preview-bar" id="cart-bar" onclick="openCart()">
+        <span>Ver Carrinho</span>
+        <span id="cart-summary">0 itens - R$ 0,00</span>
+    </div>
+
+    <!-- MODAL CARRINHO -->
+    <div class="modal" id="cart-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Seu Pedido</h3>
+                <button class="close-btn" onclick="closeCart()">&times;</button>
+            </div>
+            <div id="cart-items-container"></div>
+
+            <div style="display: none;" id="cart-delivery-fee">
+                Taxa de Entrega (Ate 3 km): R$ 6,00
+            </div>
+            <div id="cart-total-price">Total: R$ 0,00</div>
+
+            <!-- DADOS DE ENTREGA -->
+            <h3 style="margin: 20px 0 14px; border-top: 1px solid var(--border); padding-top: 18px; font-family: 'DM Serif Display', serif; font-size: 1.2rem;">Dados de Entrega</h3>
+            <form id="checkout-form" onsubmit="sendOrder(event)">
+                <div class="form-group">
+                    <label>Seu Nome *</label>
+                    <input type="text" id="client-name" required placeholder="Ex: Joao Silva">
+                </div>
+                <div class="form-group">
+                    <label>Forma de Entrega *</label>
+                    <select id="delivery-type" onchange="handleDeliveryChange()" required>
+                        <option value="entrega">Entrega em Domicilio (Raio de 3km)</option>
+                        <option value="retirada">Retirar na Praca (Alto do Tabao)</option>
+                    </select>
+                </div>
+                <div id="address-fields">
+                    <div class="delivery-alert">
+                        <strong>Aviso de Frete:</strong> Para entregas domiciliares, sera aplicada uma taxa fixa de <strong>R$ 6,00</strong> para distancias de ate 3 km da loja.
+                    </div>
+                    <div class="form-group">
+                        <label>Endereco Completo *</label>
+                        <input type="text" id="client-address" placeholder="Rua, Numero, Bairro">
+                    </div>
+                    <div class="form-group">
+                        <label>Ponto de Referencia</label>
+                        <input type="text" id="client-ref" placeholder="Ex: Proximo a padaria">
+                    </div>
+                </div>
+
+                <!-- FORMA DE PAGAMENTO -->
+                <h3 style="margin: 12px 0 8px; font-family: 'DM Serif Display', serif; font-size: 1.15rem;">Forma de Pagamento *</h3>
+                <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 10px;">Pague com Pix, cartao de debito ou credito pelo Mercado Pago.</p>
+
+                <div class="payment-options" id="payment-options">
+                    <label class="payment-card selected" data-method="pix" onclick="selectPayment('pix', this)">
+                        <input type="radio" name="payment" value="pix" checked>
+                        <div class="payment-card-icon">PIX</div>
+                        <div class="payment-card-info">
+                            <h4>Pix</h4>
+                            <p>Pagamento instantaneo via Mercado Pago</p>
+                        </div>
+                        <span class="payment-badge mp-badge">Rapido</span>
+                    </label>
+
+                    <label class="payment-card" data-method="debito" onclick="selectPayment('debito', this)">
+                        <input type="radio" name="payment" value="debito">
+                        <div class="payment-card-icon">DEB</div>
+                        <div class="payment-card-info">
+                            <h4>Débito</h4>
+                            <p>Cartao de debito via Mercado Pago</p>
+                        </div>
+                        <span class="payment-badge mp-badge">A vista</span>
+                    </label>
+
+                    <label class="payment-card" data-method="credito" onclick="selectPayment('credito', this)">
+                        <input type="radio" name="payment" value="credito">
+                        <div class="payment-card-icon">CRD</div>
+                        <div class="payment-card-info">
+                            <h4>Crédito à Vista</h4>
+                            <p>Cartao de credito - pagamento unico (1x)</p>
+                        </div>
+                        <span class="payment-badge mp-badge">1x</span>
+                    </label>
+                </div>
+
+                <!-- INFO MERCADO PAGO -->
+                <div id="mp-info-section" class="mp-info-box">
+                    <div class="mp-logo-text">Mercado Pago</div>
+                    <p>Ao confirmar, voce sera direcionado ao checkout seguro do Mercado Pago para finalizar o pagamento com a forma escolhida.</p>
+                </div>
+
+                <div class="payment-required-alert">
+                    Pagamento obrigatoriamente ONLINE via Mercado Pago. Não aceitamos pagamento na entrega.
+                </div>
+
+                <button type="submit" class="checkout-btn" id="checkout-btn">
+                    Confirmar Pedido e Pagar no Mercado Pago
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- OVERLAY MERCADO PAGO -->
+    <div class="mp-overlay" id="mp-overlay">
+        <div class="mp-box">
+            <div class="mp-spinner"></div>
+            <h3>Redirecionando ao Mercado Pago</h3>
+            <p id="mp-status">Aguarde, estamos preparando seu checkout seguro...</p>
+        </div>
+    </div>
+
+    <!-- WHATSAPP CHATBOT -->
+    <div class="wa-bot-wrapper" id="wa-bot-wrapper">
+        <div class="wa-bot-bubble" id="wa-bubble" onclick="toggleWaBot()">Oi! Precisa de ajuda?</div>
+        <div class="wa-bot-panel" id="wa-panel">
+            <div class="wa-bot-header">
+                <div class="wa-bot-avatar">IG</div>
+                <div class="wa-bot-header-info">
+                    <h4>Grazia Sorvetes</h4>
+                    <span>Online agora</span>
+                </div>
+            </div>
+            <div class="wa-bot-body" id="wa-body">
+                <div class="wa-bot-msg">
+                    Ola! Bem-vindo a <strong>Grazia Sorvetes</strong>!<br>Como posso te ajudar hoje?
+                </div>
+                <div class="wa-bot-options" id="wa-options">
+                    <button class="wa-bot-opt" onclick="waOption('cardapio')">Ver Cardapio</button>
+                    <button class="wa-bot-opt" onclick="waOption('pedido')">Fazer um Pedido</button>
+                    <button class="wa-bot-opt" onclick="waOption('horario')">Horario de Funcionamento</button>
+                    <button class="wa-bot-opt" onclick="waOption('entrega')">Informacoes de Entrega</button>
+                    <button class="wa-bot-opt" onclick="waOption('localizacao')">Localizacao</button>
+                    <button class="wa-bot-opt" onclick="waOption('outro')">Outra Duvida</button>
+                </div>
+            </div>
+            <div class="wa-bot-input-area">
+                <input type="text" id="wa-input" placeholder="Digite sua mensagem..." onkeydown="if(event.key==='Enter')sendWaMsg()">
+                <button class="wa-bot-send" onclick="sendWaMsg()">></button>
+            </div>
+        </div>
+        <button class="wa-fab" id="wa-fab" onclick="toggleWaBot()">
+            <div class="wa-fab-pulse"></div>
+            <div class="wa-fab-badge" id="wa-badge">1</div>
+            <svg viewBox="0 0 32 32"><path d="M16.004 0h-.008C7.174 0 0 7.176 0 16.004c0 3.5 1.128 6.744 3.046 9.378L1.054 31.29l6.124-1.958A15.907 15.907 0 0016.004 32C24.826 32 32 24.826 32 16.004S24.826 0 16.004 0zm9.302 22.602c-.39 1.1-1.932 2.014-3.158 2.28-.842.18-1.94.324-5.646-1.212-4.742-1.97-7.808-6.79-8.04-7.096-.226-.306-1.896-2.522-1.896-4.81s1.198-3.41 1.62-3.872c.39-.426.922-.6 1.378-.6.15 0 .284.008.406.014.434.018.652.044.94.726.358.842 1.226 2.992 1.332 3.21.108.218.216.51.068.816-.14.306-.218.498-.434.766-.218.268-.458.598-.656.804-.218.226-.448.472-.192.93s1.098 1.812 2.356 2.938c1.626 1.452 2.99 1.906 3.422 2.102.348.158.758.122 1.04-.192.358-.4.806-1.018 1.258-1.642.322-.446.722-.502 1.134-.342.418.15 2.634 1.242 3.084 1.468.452.226.752.338.862.528.108.19.108 1.09-.282 2.19z"/></svg>
+        </button>
+    </div>
+
+    <script>
+        // ===================================================================
+        //  CONFIGURACAO - MUDE A URL DO SEU BACKEND NO RENDER AQUI
+        // ===================================================================
+        const BACKEND_URL = 'https://menu-grazia-sorvetes.onrender.com'; // <== COLOQUE A URL DO SEU SERVIDOR NO RENDER AQUI
+
+        let selectedPaymentMethod = 'pix';
+
+        const picoles = ["Coco","Chocolate","Morango","Leite Condensado","Ninho","Coco Queimado","Mousse de Maracuja","Doce de Leite","Milho Verde","Blue Ice","Bombom","Flocos","Amendoim","Limonada Suissa","Abacaxi","Limao","Tangerina","Uva","Maracuja","Groselha","Maca Verde","Pinta Lingua","Manga"];
+        const paletas = ["Acai / Leite Condensado","Banana / Avela","Brigadeiro","Cafe Frappe","Chiclete","Chocolate / Morango","Churros / Canela","Cocada Branca","Cocada / Leite Condensado","Coco / Beijinho","Cural","Iogurte / Frutas Vermelhas","Maracuja / Leite Condensado","Menta / Chocolate","Morango / Leite Condensado","Ninho / Avela","Ovomaltine","Pacoca","Pa de Moleque","Prestigio / Beijinho","Romeu e Julieta","Pistache"];
+        const potes = ["Abacaxi","Abacaxi ao Vinho","Banana Caramelizada","Banoffe","Bombom","Bombom com Cafe","Brigadeiro","Capuccino","Chandelle","Chiclete","Chocolate","Cocada","Coco","Coco Trufado","Creme","Doce de Leite","Flocos","Iogurte","Kinder Ovo","Leite Condensado","Leite Condensado Trufado","Maracuja","Maracuja Trufado","Milho Verde","Mega Trufa","Morango","Mousse de Limao","Napolitano","Negresco","Ninho Trufado","Ovomaltine","Passas ao Rum","Pavao","Pistache","Sensacao","Sonho de Valsa","Triplo Chocolate"];
+        const potes300 = ["Coco","Chocolate","Napolitano","Flocos","Bombom","Morango","Milho Verde"];
+        const adicionaisAcai = ["Leite em Po","Leite Condensado","Pacoca","Choco Power","Confete","Granulado"];
+        const adicionaisGarrafa = ["Leite em Po","Leite Condensado","Pacoca"];
+
+        let cart = JSON.parse(localStorage.getItem('grazia_cart')) || [];
+
+        function saveCart() {
+            localStorage.setItem('grazia_cart', JSON.stringify(cart));
+            updateCartBar();
+        }
+
+        function selectPayment(method, element) {
+            selectedPaymentMethod = method;
+            document.querySelectorAll('.payment-card').forEach(c => c.classList.remove('selected'));
+            element.classList.add('selected');
+            element.querySelector('input[type="radio"]').checked = true;
+        }
+
+        // ===================================================================
+        //  MERCADO PAGO - ENVIO DO PEDIDO
+        // ===================================================================
+        async function initiateMercadoPagoCheckout(orderData) {
+            const overlay = document.getElementById('mp-overlay');
+            const statusEl = document.getElementById('mp-status');
+            if (overlay) overlay.classList.add('show');
+
+            try {
+                if (statusEl) statusEl.textContent = 'Conectando ao Mercado Pago...';
+
+                const response = await fetch(`${BACKEND_URL}/criar-preferencia`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(orderData)
+                });
+
+                if (!response.ok) {
+                    const errData = await response.json().catch(() => ({}));
+                    throw new Error(errData.error || 'Erro no servidor');
+                }
+
+                const data = await response.json();
+
+                if (data.init_point) {
+                    if (statusEl) statusEl.textContent = 'Redirecionando ao Mercado Pago...';
+                    await new Promise(r => setTimeout(r, 800));
+                    window.location.href = data.init_point;
+                } else {
+                    throw new Error('Link de pagamento nao foi gerado');
+                }
+
+            } catch (error) {
+                console.error('Erro ao iniciar pagamento:', error);
+                if (statusEl) statusEl.textContent = 'Erro! Enviando pelo WhatsApp...';
+                await new Promise(r => setTimeout(r, 1500));
+                if (overlay) overlay.classList.remove('show');
+
+                // Fallback: envia pedido pelo WhatsApp
+                const message = buildWhatsAppMessage(orderData);
+                window.open(`https://wa.me/5512991618035?text=${encodeURIComponent(message)}`, '_blank');
+                cart = [];
+                saveCart();
+                closeCart();
+                alert('Ocorreu um erro ao redirecionar ao Mercado Pago. Seu pedido foi enviado pelo WhatsApp.');
+            }
+        }
+
+        function buildWhatsAppMessage(orderData) {
+            let msg = `*NOVO PEDIDO - GRAZIA SORVETES*\n\n`;
+            msg += `*Cliente:* ${orderData.clientName}\n`;
+            msg += `*Tipo:* ${orderData.deliveryType === 'entrega' ? 'Entrega' : 'Retirada'}\n`;
+            if (orderData.deliveryType === 'entrega') {
+                msg += `*End:* ${orderData.address}\n`;
+                msg += `*Frete:* R$ 6,00\n`;
+            }
+            if (orderData.ref) msg += `*Ref:* ${orderData.ref}\n`;
+
+            let payLabel = '';
+            if (orderData.paymentMethod === 'pix') payLabel = 'Pix via Mercado Pago';
+            else if (orderData.paymentMethod === 'debito') payLabel = 'Cartao de Débito via Mercado Pago';
+            else if (orderData.paymentMethod === 'credito') payLabel = 'Cartao de Crédito à Vista 1x via Mercado Pago';
+
+            msg += `*Pagamento:* ${payLabel}\n\n*ITENS:*\n`;
+            orderData.items.forEach(item => {
+                msg += `${item.qty}x ${item.name} -> R$ ${(item.unitPrice * item.qty).toFixed(2)}\n`;
+            });
+            msg += `\n*TOTAL:* R$ ${orderData.total.toFixed(2)}`;
+            return msg;
+        }
+
+        function init() {
+            if(localStorage.getItem('grazia_theme') === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                document.querySelector('.theme-toggle').textContent = 'Modo Claro';
+            }
+
+            // PICOLES
+            const gPicoles = document.getElementById('grid-picoles');
+            picoles.forEach(p => {
+                gPicoles.innerHTML += `<div class="product-card" data-name="${p.toLowerCase()}"><div class="product-name">${p}</div><div class="product-price">R$ 2,20</div><button class="add-btn" onclick="addToCart('${p}', 2.20, 'Picol')">Adicionar</button></div>`;
+            });
+
+            // PALETAS
+            const gPaletas = document.getElementById('grid-paletas');
+            paletas.forEach(p => {
+                gPaletas.innerHTML += `<div class="product-card" data-name="${p.toLowerCase()}"><div class="product-name">${p}</div><div class="product-price">R$ 6,30</div><button class="add-btn" onclick="addToCart('${p}', 6.30, 'Paleta')">Adicionar</button></div>`;
+            });
+
+            // POTES 300 ML
+            const gPotes300 = document.getElementById('grid-potes300');
+            potes300.forEach(p => {
+                gPotes300.innerHTML += `<div class="product-card" data-name="${p.toLowerCase()}"><div class="product-name">${p} (300ml)</div><div class="product-price">R$ 10,00</div><button class="add-btn" onclick="addToCart('${p} (300ml)', 10.00, 'Pote 300ml')">Adicionar</button></div>`;
+            });
+
+            // POTES 1 LITRO
+            const gPotes1L = document.getElementById('grid-potes1L');
+            potes.forEach(p => {
+                gPotes1L.innerHTML += `<div class="product-card" data-name="${p.toLowerCase()} 1l"><div class="product-name">${p}</div><div class="product-price">R$ 19,00</div><button class="add-btn" onclick="addToCart('${p} (1L)', 19.00, 'Pote 1L')">Adicionar</button></div>`;
+            });
+
+            // POTES 1.800 ML
+            const gPotes1800 = document.getElementById('grid-potes1800');
+            potes.forEach(p => {
+                gPotes1800.innerHTML += `<div class="product-card" data-name="${p.toLowerCase()} 1.8l"><div class="product-name">${p}</div><div class="product-price">R$ 29,00</div><button class="add-btn" onclick="addToCart('${p} (1.8L)', 29.00, 'Pote 1.8L')">Adicionar</button></div>`;
+            });
+
+            // COPOS DE ACAI
+            const gCopos = document.getElementById('grid-copos-acai');
+            let addons300 = `<div class="addons-list"><strong>Escolha ate 2:</strong>`;
+            adicionaisAcai.forEach(add => {
+                addons300 += `<label><input type="checkbox" class="addon-copo-300ml" value="${add}" onchange="limitCheckboxes('copo-300ml', this, 2)"> ${add}</label>`;
+            });
+            addons300 += `</div>`;
+            gCopos.innerHTML += `<div class="product-card" data-name="copo acai 300ml"><div class="product-name">Copo Acai 300ml</div>${addons300}<div class="product-price">R$ 14,99</div><button class="add-btn" onclick="addCopoToCart('300ml', 14.99)">Adicionar</button></div>`;
+
+            let addons500 = `<div class="addons-list"><strong>Escolha ate 3:</strong>`;
+            adicionaisAcai.forEach(add => {
+                addons500 += `<label><input type="checkbox" class="addon-copo-500ml" value="${add}" onchange="limitCheckboxes('copo-500ml', this, 3)"> ${add}</label>`;
+            });
+            addons500 += `</div>`;
+            gCopos.innerHTML += `<div class="product-card" data-name="copo acai 500ml"><div class="product-name">Copo Acai 500ml</div>${addons500}<div class="product-price">R$ 17,99</div><button class="add-btn" onclick="addCopoToCart('500ml', 17.99)">Adicionar</button></div>`;
+
+            // ACAI EM LITRO
+            document.getElementById('grid-acai').innerHTML = `<div class="product-card" data-name="acai tradicional"><div class="product-name">Acai Tradicional</div><select class="size-select" id="size-acai"><option value="1L|22.00">1 Litro - R$ 22,00</option><option value="1.8L|37.50">1.800 ml - R$ 37,50</option></select><button class="add-btn" onclick="addAcaiToCart()">Adicionar</button></div>`;
+
+            // ACAI NA GARRAFA
+            const gGarrafa = document.getElementById('grid-garrafa-acai');
+            const tamanhosGarrafa = [{size:"300ml",price:13.99},{size:"500ml",price:17.99}];
+            tamanhosGarrafa.forEach(c => {
+                let addonsHtml = `<div class="addons-list"><strong>Escolha ate 2:</strong>`;
+                adicionaisGarrafa.forEach(add => {
+                    addonsHtml += `<label><input type="checkbox" class="addon-garrafa-${c.size}" value="${add}" onchange="limitCheckboxes('garrafa-${c.size}', this, 2)"> ${add}</label>`;
+                });
+                addonsHtml += `</div>`;
+                gGarrafa.innerHTML += `<div class="product-card" data-name="acai garrafa ${c.size}"><div class="product-name">Acai na Garrafa ${c.size}</div>${addonsHtml}<div class="product-price">R$ ${c.price.toFixed(2)}</div><button class="add-btn" onclick="addGarrafaToCart('${c.size}', ${c.price})">Adicionar</button></div>`;
+            });
+
+            // MILK SHAKE
+            const gMilkShake = document.getElementById('grid-milkshake');
+            const tamanhosMilkShake = [{size:"300ml",price:13.99},{size:"500ml",price:17.99}];
+            tamanhosMilkShake.forEach(c => {
+                let addonsHtml = `<div class="addons-list"><strong>Escolha ate 2:</strong>`;
+                adicionaisGarrafa.forEach(add => {
+                    addonsHtml += `<label><input type="checkbox" class="addon-milkshake-${c.size}" value="${add}" onchange="limitCheckboxes('milkshake-${c.size}', this, 2)"> ${add}</label>`;
+                });
+                addonsHtml += `</div>`;
+                gMilkShake.innerHTML += `<div class="product-card" data-name="milk shake acai ${c.size}"><div class="product-name">Milk Shake Acai ${c.size}</div>${addonsHtml}<div class="product-price">R$ ${c.price.toFixed(2)}</div><button class="add-btn" onclick="addMilkShakeToCart('${c.size}', ${c.price})">Adicionar</button></div>`;
+            });
+
+            // EMBALAGENS E COBERTURAS
+            const embalagensECoberturas = [
+                {name:"Pacote de Cascao",price:11.00,cat:"Embalagens"},
+                {name:"Pacote de Cestinha",price:10.00,cat:"Embalagens"},
+                {name:"Cobertura de Chocolate",price:14.00,cat:"Coberturas"},
+                {name:"Cobertura de Morango",price:14.00,cat:"Coberturas"},
+                {name:"Cobertura de Caramelo",price:14.00,cat:"Coberturas"}
+            ];
+            const gEmbalagens = document.getElementById('grid-embalagens');
+            embalagensECoberturas.forEach(ec => {
+                gEmbalagens.innerHTML += `<div class="product-card" data-name="${ec.name.toLowerCase()}"><div class="product-name">${ec.name}</div><div class="product-price">R$ ${ec.price.toFixed(2)}</div><button class="add-btn" onclick="addToCart('${ec.name}', ${ec.price}, '${ec.cat}')">Adicionar</button></div>`;
+            });
+
+            // ESPECIAIS
+            const outros = [
+                {name:"Ituzinho Ninho",price:6.30,cat:"Ituzinho"},
+                {name:"Ituzinho Napolitano",price:6.30,cat:"Ituzinho"},
+                {name:"Skimo Chocolate",price:6.30,cat:"Skimo"},
+                {name:"Skimo Coco",price:6.30,cat:"Skimo"},
+                {name:"Skimo Leite Condensado",price:6.30,cat:"Skimo"},
+                {name:"Skimo Morango",price:6.30,cat:"Skimo"}
+            ];
+            const gOutros = document.getElementById('grid-outros');
+            outros.forEach(o => {
+                gOutros.innerHTML += `<div class="product-card" data-name="${o.name.toLowerCase()}"><div class="product-name">${o.name}</div><div class="product-price">R$ ${o.price.toFixed(2)}</div><button class="add-btn" onclick="addToCart('${o.name}', ${o.price}, '${o.cat}')">Adicionar</button></div>`;
+            });
+
+            if(localStorage.getItem('grazia_client_name')) document.getElementById('client-name').value = localStorage.getItem('grazia_client_name');
+            if(localStorage.getItem('grazia_client_address')) document.getElementById('client-address').value = localStorage.getItem('grazia_client_address');
+            if(localStorage.getItem('grazia_client_ref')) document.getElementById('client-ref').value = localStorage.getItem('grazia_client_ref');
+
+            updateCartBar();
+
+            setTimeout(() => {
+                const bubble = document.getElementById('wa-bubble');
+                if(bubble && !document.getElementById('wa-panel').classList.contains('open')) {
+                    bubble.style.opacity = '0';
+                    bubble.style.transform = 'translateY(8px)';
+                    bubble.style.transition = 'all 0.3s ease';
+                }
+            }, 5000);
+        }
+
+        /* ===== CHATBOT ===== */
+        let waOpen = false;
+        function toggleWaBot() {
+            const panel = document.getElementById('wa-panel');
+            const badge = document.getElementById('wa-badge');
+            const bubble = document.getElementById('wa-bubble');
+            waOpen = !waOpen;
+            if(waOpen) {
+                panel.classList.add('open');
+                badge.style.display = 'none';
+                if(bubble) bubble.style.display = 'none';
+            } else {
+                panel.classList.remove('open');
+            }
+        }
+
+        function waAddMsg(text, isUser) {
+            const body = document.getElementById('wa-body');
+            const options = document.getElementById('wa-options');
+            if(options) options.remove();
+            const div = document.createElement('div');
+            div.className = 'wa-bot-msg';
+            if(isUser) {
+                div.style.background = '#DCF8C6';
+                div.style.marginLeft = 'auto';
+                div.style.borderRadius = '12px 0 12px 12px';
+                div.style.textAlign = 'right';
+                div.style.maxWidth = '85%';
+                if(document.documentElement.getAttribute('data-theme') === 'dark') div.style.background = '#1a3d1a';
+            }
+            div.innerHTML = text;
+            body.appendChild(div);
+            body.scrollTop = body.scrollHeight;
+        }
+
+        function waShowOptions(opts) {
+            const body = document.getElementById('wa-body');
+            const wrap = document.createElement('div');
+            wrap.className = 'wa-bot-options';
+            wrap.id = 'wa-options';
+            opts.forEach(o => {
+                const btn = document.createElement('button');
+                btn.className = 'wa-bot-opt';
+                btn.innerHTML = o.label;
+                btn.onclick = () => waOption(o.action);
+                wrap.appendChild(btn);
+            });
+            body.appendChild(wrap);
+            body.scrollTop = body.scrollHeight;
+        }
+
+        function waOption(opt) {
+            const options = document.getElementById('wa-options');
+            if(options) options.remove();
+            switch(opt) {
+                case 'cardapio':
+                    waAddMsg('Aqui esta nosso cardapio!', false);
+                    setTimeout(() => {
+                        waAddMsg('Temos: <strong>Picoles</strong> (R$ 2,20), <strong>Paletas</strong> (R$ 6,30), <strong>Sorvete em Pote</strong> (300ml / 1L / 1.8L), <strong>Copos de Acai</strong> (300ml R$ 14,99 / 500ml R$ 17,99), <strong>Acai em Litro</strong>, <strong>Acai na Garrafa</strong>, <strong>Milk Shake</strong> e mais!', false);
+                        setTimeout(() => { waShowOptions([{label:'Fazer Pedido',action:'pedido'},{label:'Horario',action:'horario'},{label:'Outra Duvida',action:'outro'}]); }, 600);
+                    }, 500);
+                    break;
+                case 'pedido':
+                    waAddMsg('Quero fazer um pedido!', true);
+                    setTimeout(() => {
+                        waAddMsg('Para fazer seu pedido:<br><br>1 - Escolha os produtos acima<br>2 - Clique em <strong>"Ver Carrinho"</strong><br>3 - Preencha seus dados<br>4 - Escolha: <strong>Pix, Débito ou Crédito</strong><br>5 - Finalize e pague online pelo Mercado Pago!<br><br>Nao aceitamos pagamento na entrega.', false);
+                        setTimeout(() => { waDirectMsg('Ola! Gostaria de fazer um pedido na Grazia Sorvetes!'); }, 800);
+                    }, 500);
+                    break;
+                case 'horario':
+                    waAddMsg('Qual o horario?', true);
+                    setTimeout(() => {
+                        waAddMsg('Estamos abertos todos os dias!<br><br><strong>Seg a Dom: 10h as 22h</strong>', false);
+                        waShowOptions([{label:'Localizacao',action:'localizacao'},{label:'Fazer Pedido',action:'pedido'}]);
+                    }, 500);
+                    break;
+                case 'entrega':
+                    waAddMsg('Como funciona a entrega?', true);
+                    setTimeout(() => {
+                        waAddMsg('Entregamos em ate <strong>3 km</strong> da loja!<br><br><strong>Taxa:</strong> R$ 6,00<br><strong>Retirada:</strong> Gratis!<br><br>Pagamento online: <strong>Pix, Débito ou Crédito</strong> via Mercado Pago.', false);
+                        waShowOptions([{label:'Fazer Pedido',action:'pedido'},{label:'Localizacao',action:'localizacao'}]);
+                    }, 500);
+                    break;
+                case 'localizacao':
+                    waAddMsg('Onde fica a loja?', true);
+                    setTimeout(() => {
+                        waAddMsg('<strong>Rua General Julio Salgado, 399 - Alto do Tabao</strong> (Na Praca!)<br><br>WhatsApp: <strong>(12) 99161-8035</strong>', false);
+                        setTimeout(() => {
+                            const body = document.getElementById('wa-body');
+                            const mapBtn = document.createElement('button');
+                            mapBtn.className = 'wa-bot-opt';
+                            mapBtn.innerHTML = 'Abrir no Google Maps';
+                            mapBtn.style.marginTop = '6px';
+                            mapBtn.onclick = () => window.open('https://www.google.com/maps/search/Rua+General+Julio+Salgado+399+Alto+do+Tabao', '_blank');
+                            body.appendChild(mapBtn);
+                            body.scrollTop = body.scrollHeight;
+                        }, 300);
+                        waShowOptions([{label:'Fazer Pedido',action:'pedido'},{label:'Horario',action:'horario'}]);
+                    }, 500);
+                    break;
+                case 'outro':
+                    waAddMsg('Tenho outra duvida', true);
+                    setTimeout(() => {
+                        waAddMsg('Digite sua duvida ou clique para falar no WhatsApp!', false);
+                        setTimeout(() => { waDirectMsg('Ola! Tenho uma duvida sobre a Grazia Sorvetes.'); }, 800);
+                    }, 500);
+                    break;
+            }
+        }
+
+        function waDirectMsg(text) {
+            const body = document.getElementById('wa-body');
+            const btn = document.createElement('button');
+            btn.className = 'wa-bot-opt';
+            btn.innerHTML = 'Abrir Conversa no WhatsApp';
+            btn.style.background = '#25D366';
+            btn.style.color = 'white';
+            btn.style.borderColor = '#25D366';
+            btn.style.justifyContent = 'center';
+            btn.onclick = () => window.open(`https://wa.me/5512991618035?text=${encodeURIComponent(text)}`, '_blank');
+            body.appendChild(btn);
+            body.scrollTop = body.scrollHeight;
+        }
+
+        function sendWaMsg() {
+            const input = document.getElementById('wa-input');
+            const text = input.value.trim();
+            if(!text) return;
+            waAddMsg(text, true);
+            input.value = '';
+            setTimeout(() => {
+                const lower = text.toLowerCase();
+                if(lower.includes('cardapio')||lower.includes('menu')||lower.includes('sabor')) waOption('cardapio');
+                else if(lower.includes('pedido')||lower.includes('comprar')) waOption('pedido');
+                else if(lower.includes('horario')||lower.includes('abre')||lower.includes('fecha')) waOption('horario');
+                else if(lower.includes('entrega')||lower.includes('frete')) waOption('entrega');
+                else if(lower.includes('onde')||lower.includes('local')||lower.includes('endereco')||lower.includes('fica')) waOption('localizacao');
+                else if(lower.includes('preco')||lower.includes('valor')||lower.includes('quanto')) {
+                    waAddMsg('Picolé: <strong>R$ 2,20</strong><br>Paleta: <strong>R$ 6,30</strong><br>Pote 300ml: <strong>R$ 10,00</strong><br>Pote 1L: <strong>R$ 19,00</strong><br>Pote 1.8L: <strong>R$ 29,00</strong><br>Copo Acai 300ml: <strong>R$ 14,99</strong><br>Copo Acai 500ml: <strong>R$ 17,99</strong>', false);
+                    waShowOptions([{label:'Fazer Pedido',action:'pedido'},{label:'Outra Duvida',action:'outro'}]);
+                } else {
+                    waAddMsg('Obrigado! Clique abaixo para falar no WhatsApp!', false);
+                    waDirectMsg(text);
+                }
+            }, 700);
+        }
+
+        function limitCheckboxes(prefix, element, max) {
+            const checked = document.querySelectorAll(`.addon-${prefix}:checked`);
+            if (checked.length > max) {
+                element.checked = false;
+                alert("Voce so pode escolher ate " + max + " adicionais!");
+            }
+        }
+
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-theme');
+            const btn = document.querySelector('.theme-toggle');
+            if(current === 'dark') {
+                document.documentElement.removeAttribute('data-theme');
+                localStorage.setItem('grazia_theme', 'light');
+                btn.textContent = 'Modo Escuro';
+            } else {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                localStorage.setItem('grazia_theme', 'dark');
+                btn.textContent = 'Modo Claro';
+            }
+        }
+
+        /* ===== CART ===== */
+        function addToCart(name, unitPrice, category) {
+            const itemKey = `${name}-${category}`;
+            const existing = cart.find(i => i.key === itemKey);
+            if(existing) existing.qty++;
+            else cart.push({key:itemKey,name,unitPrice,basePrice:unitPrice,category,qty:1});
+            saveCart();
+        }
+
+        function addCopoToCart(size, price) {
+            const checkboxes = document.querySelectorAll(`.addon-copo-${size}:checked`);
+            let selectedAddons = [];
+            checkboxes.forEach(cb => selectedAddons.push(cb.value));
+            const addonsText = selectedAddons.length > 0 ? ` + [${selectedAddons.join(', ')}]` : ' (Sem Adicionais)';
+            const fullItemName = `Copo Acai ${size}${addonsText}`;
+            cart.push({key:`${fullItemName}-${Date.now()}`,name:fullItemName,unitPrice:price,basePrice:price,category:'Copo Acai',qty:1});
+            document.querySelectorAll(`.addon-copo-${size}`).forEach(cb => cb.checked = false);
+            saveCart();
+        }
+
+        function addAcaiToCart() {
+            const select = document.getElementById('size-acai');
+            const [size, price] = select.value.split('|');
+            const numPrice = parseFloat(price);
+            const itemKey = `Acai-${size}`;
+            const existing = cart.find(i => i.key === itemKey);
+            if(existing) existing.qty++;
+            else cart.push({key:itemKey,name:`Acai Tradicional (${size})`,unitPrice:numPrice,basePrice:numPrice,category:'Acai',qty:1});
+            saveCart();
+        }
+
+        function addGarrafaToCart(size, price) {
+            const checkboxes = document.querySelectorAll(`.addon-garrafa-${size}:checked`);
+            let selectedAddons = [];
+            checkboxes.forEach(cb => selectedAddons.push(cb.value));
+            const addonsText = selectedAddons.length > 0 ? ` + [${selectedAddons.join(', ')}]` : ' (Sem Adicionais)';
+            const fullItemName = `Acai na Garrafa ${size}${addonsText}`;
+            cart.push({key:`${fullItemName}-${Date.now()}`,name:fullItemName,unitPrice:price,basePrice:price,category:'Acai na Garrafa',qty:1});
+            document.querySelectorAll(`.addon-garrafa-${size}`).forEach(cb => cb.checked = false);
+            saveCart();
+        }
+
+        function addMilkShakeToCart(size, price) {
+            const checkboxes = document.querySelectorAll(`.addon-milkshake-${size}:checked`);
+            let selectedAddons = [];
+            checkboxes.forEach(cb => selectedAddons.push(cb.value));
+            const addonsText = selectedAddons.length > 0 ? ` + [${selectedAddons.join(', ')}]` : ' (Sem Adicionais)';
+            const fullItemName = `Milk Shake Acai ${size}${addonsText}`;
+            cart.push({key:`${fullItemName}-${Date.now()}`,name:fullItemName,unitPrice:price,basePrice:price,category:'Milk Shake Acai',qty:1});
+            document.querySelectorAll(`.addon-milkshake-${size}`).forEach(cb => cb.checked = false);
+            saveCart();
+        }
+
+        function calculateTotals() {
+            let totalQty = 0, totalPrice = 0, totalPicoles = 0;
+            cart.forEach(item => { if(item.category === 'Picol') totalPicoles += item.qty; });
+            let picoleUnitPrice = 2.20;
+            if(totalPicoles >= 100) picoleUnitPrice = 1.60;
+            else if(totalPicoles >= 10) picoleUnitPrice = 1.80;
+            cart.forEach(item => {
+                if(item.category === 'Picol') item.unitPrice = picoleUnitPrice;
+                else item.unitPrice = item.basePrice;
+                totalQty += item.qty;
+                totalPrice += (item.unitPrice * item.qty);
+            });
+            const deliveryType = document.getElementById('delivery-type') ? document.getElementById('delivery-type').value : 'entrega';
+            let deliveryFee = (deliveryType === 'entrega' && cart.length > 0) ? 6.00 : 0;
+            return { totalQty, totalPrice, deliveryFee };
+        }
+
+        function updateCartBar() {
+            const { totalQty, totalPrice, deliveryFee } = calculateTotals();
+            document.getElementById('cart-summary').innerText = `${totalQty} itens - R$ ${(totalPrice + deliveryFee).toFixed(2)}`;
+        }
+
+        function openCart() { document.getElementById('cart-modal').style.display = 'flex'; renderCartItems(); }
+        function closeCart() { document.getElementById('cart-modal').style.display = 'none'; }
+
+        function changeQty(key, delta) {
+            const idx = cart.findIndex(i => i.key === key);
+            if(idx !== -1) {
+                cart[idx].qty += delta;
+                if(cart[idx].qty <= 0) cart.splice(idx, 1);
+                saveCart(); renderCartItems();
+            }
+        }
+
+        function handleDeliveryChange() {
+            document.getElementById('address-fields').style.display = document.getElementById('delivery-type').value === 'entrega' ? 'block' : 'none';
+            renderCartItems(); updateCartBar();
+        }
+
+        function renderCartItems() {
+            const container = document.getElementById('cart-items-container');
+            container.innerHTML = '';
+            if(cart.length === 0) {
+                container.innerHTML = '<p style="text-align:center; padding: 28px 0; color: var(--text-muted);">Seu carrinho esta vazio.</p>';
+                document.getElementById('cart-total-price').innerText = 'Total: R$ 0,00';
+                document.getElementById('cart-delivery-fee').style.display = 'none';
+                return;
+            }
+            const { totalPrice, deliveryFee } = calculateTotals();
+            cart.forEach(item => {
+                container.innerHTML += `<div class="cart-item"><div><span style="font-size:0.75rem; display:block; opacity:0.6; text-transform:uppercase; letter-spacing:0.06em;">${item.category}</span><strong>${item.name}</strong><br><span style="font-size:0.85rem; color:var(--text-muted);">R$ ${item.unitPrice.toFixed(2)} cada</span></div><div class="cart-item-actions"><button class="qty-btn" onclick="changeQty('${item.key}', -1)">-</button><span>${item.qty}</span><button class="qty-btn" onclick="changeQty('${item.key}', 1)">+</button></div></div>`;
+            });
+            document.getElementById('cart-delivery-fee').style.display = deliveryFee > 0 ? 'block' : 'none';
+            document.getElementById('cart-total-price').innerText = `Total: R$ ${(totalPrice + deliveryFee).toFixed(2)}`;
+        }
+
+        function filterCategory(cat) {
+            document.querySelectorAll('.category-btn').forEach(btn => btn.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+            document.querySelectorAll('.product-section').forEach(sec => {
+                sec.style.display = (cat === 'all' || sec.getAttribute('data-cat') === cat) ? 'block' : 'none';
+            });
+        }
+
+        function filterProducts() {
+            const query = document.getElementById('search').value.toLowerCase();
+            document.querySelectorAll('.product-card').forEach(card => {
+                card.style.display = card.getAttribute('data-name').includes(query) ? 'flex' : 'none';
+            });
+        }
+
+        function sendOrder(e) {
+            e.preventDefault();
+            if(cart.length === 0) { alert('Seu carrinho esta vazio!'); return; }
+
+            const name = document.getElementById('client-name').value;
+            const delivType = document.getElementById('delivery-type').value;
+            const addr = document.getElementById('client-address').value;
+            const ref = document.getElementById('client-ref').value;
+            const { totalPrice, deliveryFee } = calculateTotals();
+
+            if (delivType === 'entrega' && !addr.trim()) {
+                alert('Preencha o endereco para entrega.');
+                return;
+            }
+
+            localStorage.setItem('grazia_client_name', name);
+            localStorage.setItem('grazia_client_address', addr);
+            localStorage.setItem('grazia_client_ref', ref);
+
+            const orderData = {
+                orderId: 'GZ-' + Date.now(),
+                clientName: name,
+                deliveryType: delivType,
+                address: addr,
+                ref: ref,
+                paymentMethod: selectedPaymentMethod,
+                items: cart.map(item => ({
+                    name: item.name,
+                    qty: item.qty,
+                    unitPrice: item.unitPrice
+                })),
+                total: totalPrice + deliveryFee,
+                deliveryFee: deliveryFee
+            };
+
+            // Desabilita botao e inicia checkout
+            const btn = document.getElementById('checkout-btn');
+            btn.disabled = true;
+            btn.textContent = 'Processando...';
+
+            initiateMercadoPagoCheckout(orderData);
+        }
+
+        window.onload = init;
+    </script>
+</body>
+</html>
