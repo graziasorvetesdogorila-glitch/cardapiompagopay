@@ -1,22 +1,24 @@
 // server.js
 // Servidor backend para Grazia Sorvetes - Integração Mercado Pago
-// Coloque este arquivo + package.json no seu repositorio GitHub
+// Compatível com mercadopago SDK v2.x
 
 const express = require('express');
 const cors = require('cors');
-const mercadopago = require('mercadopago');
+const { MercadoPagoConfig, Preference, Payment } = require('mercadopago');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 // ===================================================================
-//  CONFIGURACAO DO MERCADO PAGO
-//  Crie sua Access Token em: https://www.mercadopago.com.br/developers/pt/docs
-//  Vá em: Seu avatar > Suas integrações > Credenciais de produção
+//  CONFIGURACAO DO MERCADO PAGO (v2.x)
+//  Crie sua Access Token em: https://www.mercadopago.com.br/developers
 // ===================================================================
-mercadopago.configure({
-    access_token: process.env.MP_ACCESS_TOKEN || 'SUA_ACCESS_TOKEN_AQUI'
+const client = new MercadoPagoConfig({
+    accessToken: process.env.MP_ACCESS_TOKEN || 'SUA_ACCESS_TOKEN_AQUI'
 });
+
+const preferenceClient = new Preference(client);
+const paymentClient = new Payment(client);
 
 app.use(cors());
 app.use(express.json());
@@ -63,27 +65,22 @@ app.post('/criar-preferencia', async (req, res) => {
             });
         }
 
-        // Determina o método de pagamento para o Mercado Pago
-        let excludedPaymentMethods = [];
+        // Determina metodos de pagamento excluidos
         let excludedPaymentTypes = [];
 
         if (paymentMethod === 'pix') {
-            // Para Pix: exclui cartões
             excludedPaymentTypes = ['credit_card', 'debit_card', 'ticket', 'atm', 'bank_transfer'];
         } else if (paymentMethod === 'debito') {
-            // Para débito: exclui crédito, Pix boleto etc.
             excludedPaymentTypes = ['credit_card', 'ticket', 'atm', 'bank_transfer'];
         } else if (paymentMethod === 'credito') {
-            // Para crédito à vista: exclui débito, Pix, boleto etc.
             excludedPaymentTypes = ['debit_card', 'ticket', 'atm', 'bank_transfer'];
         }
 
-        // Descrição do pedido
         const descricaoItens = items.map(i => `${i.qty}x ${i.name}`).join(', ');
         const tipoEntrega = deliveryType === 'entrega' ? 'Entrega' : 'Retirada';
 
-        // Cria a preferência no Mercado Pago
-        const preference = {
+        // Cria a preferência usando o SDK v2
+        const preferenceBody = {
             items: mpItems,
             payer: {
                 name: clientName
@@ -103,7 +100,6 @@ app.post('/criar-preferencia', async (req, res) => {
             shipments: {
                 mode: 'not_specified'
             },
-            notification_url: `${req.protocol}://${req.get('host')}/webhook`,
             metadata: {
                 client_name: clientName,
                 delivery_type: tipoEntrega,
@@ -116,14 +112,14 @@ app.post('/criar-preferencia', async (req, res) => {
 
         console.log(`[${new Date().toISOString()}] Criando preferencia para pedido ${orderId} - Cliente: ${clientName} - Total: R$ ${total}`);
 
-        const response = await mercadopago.preferences.create(preference);
+        const response = await preferenceClient.create({ body: preferenceBody });
 
-        console.log(`[${new Date().toISOString()}] Preferencia criada: ${response.body.id} - Init Point: ${response.body.init_point}`);
+        console.log(`[${new Date().toISOString()}] Preferencia criada: ${response.id} - Init Point: ${response.init_point}`);
 
         res.json({
-            id: response.body.id,
-            init_point: response.body.init_point,
-            sandbox_init_point: response.body.sandbox_init_point
+            id: response.id,
+            init_point: response.init_point,
+            sandbox_init_point: response.sandbox_init_point
         });
 
     } catch (error) {
@@ -142,13 +138,12 @@ app.post('/webhook', async (req, res) => {
     try {
         const { type, data } = req.body;
 
-        if (type === 'payment') {
+        if (type === 'payment' && data && data.id) {
             const paymentId = data.id;
             console.log(`[${new Date().toISOString()}] Webhook recebido - Pagamento: ${paymentId}`);
 
-            // Busca detalhes do pagamento
-            const payment = await mercadopago.payment.get(paymentId);
-            const { status, external_reference, transaction_amount, payer } = payment.body;
+            const payment = await paymentClient.get({ id: paymentId });
+            const { status, external_reference, transaction_amount } = payment;
 
             console.log(`[${new Date().toISOString()}] Pedido ${external_reference} - Status: ${status} - Valor: R$ ${transaction_amount}`);
         }
@@ -156,22 +151,22 @@ app.post('/webhook', async (req, res) => {
         res.status(200).send('OK');
     } catch (error) {
         console.error('Erro no webhook:', error);
-        res.status(200).send('OK'); // Sempre retorna 200 para o MP
+        res.status(200).send('OK');
     }
 });
 
 // ===================================================================
-//  CONSULTAR STATUS DO PAGAMENTO (opcional)
+//  CONSULTAR STATUS DO PAGAMENTO
 // ===================================================================
 app.get('/pagamento/:paymentId', async (req, res) => {
     try {
-        const payment = await mercadopago.payment.get(req.params.paymentId);
+        const payment = await paymentClient.get({ id: req.params.paymentId });
         res.json({
-            id: payment.body.id,
-            status: payment.body.status,
-            status_detail: payment.body.status_detail,
-            transaction_amount: payment.body.transaction_amount,
-            external_reference: payment.body.external_reference
+            id: payment.id,
+            status: payment.status,
+            status_detail: payment.status_detail,
+            transaction_amount: payment.transaction_amount,
+            external_reference: payment.external_reference
         });
     } catch (error) {
         res.status(500).json({ error: 'Erro ao consultar pagamento' });
@@ -183,6 +178,6 @@ app.listen(PORT, () => {
     console.log(`===========================================`);
     console.log(`  GRAZIA SORVETES - Servidor Backend`);
     console.log(`  Rodando na porta ${PORT}`);
-    console.log(`  Mercado Pago: ${process.env.MP_ACCESS_TOKEN ? 'Configurado' : 'NAO CONFIGURADO - Defina MP_ACCESS_TOKEN'}`);
+    console.log(`  Mercado Pago: ${process.env.MP_ACCESS_TOKEN ? 'Configurado' : 'NAO CONFIGURADO'}`);
     console.log(`===========================================`);
 });
